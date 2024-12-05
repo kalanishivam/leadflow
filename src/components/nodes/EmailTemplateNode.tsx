@@ -1,7 +1,7 @@
-import { Handle, type NodeProps, Position, type Node } from '@xyflow/react'
-import React, { useState, useEffect } from 'react'
-import { UserRound, Search, Plus, Mail } from 'lucide-react'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Handle, Position, type Node } from '@xyflow/react'
+import  { useState } from 'react'
+import {  Plus, Mail } from 'lucide-react'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ComboBox } from '../ComboBox'
 
 
@@ -71,6 +71,9 @@ const EmailTemplateNode = ({updateNodeData} : { updateNodeData?: (emailTemplate:
                 </Dialog>
                 </div>
           <ComboBox />
+          <DialogFooter>
+            <button className='bg-black text-white font-semibold px-4 rounded-lg  p-2'>Insert</button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

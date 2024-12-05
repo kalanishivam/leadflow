@@ -17,9 +17,11 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import '@xyflow/react/dist/style.css';
 import AddLeadNode, { AddLeadNodeType } from '../components/nodes/AddLeadNode';
 import EmailTemplateNode, {  EmailTemplateNodeType } from '../components/nodes/EmailTemplateNode';
+import AddDelayNode, { DelayNodeType } from '@/components/nodes/AddDelayNode';
 const initialNodes :  Node[] = [
     { id: '22', position: { x: 500, y: 50 }, type : 'addLeadNode' , data: {  },  },
-    { id: 'email-template-1', position: { x: 200, y: 100 }, type : 'emailTemplateNode' , data: {  },  }
+    { id: 'email-template-1', position: { x: 200, y: 100 }, type : 'emailTemplateNode' , data: {  },  },
+    { id: 'delay node typs', position: { x: 200, y: 200 }, type : 'delayNode' , data: {  },  }
   ];
   const initialEdges = [{ id : '1',  source: '1', target: '2' }];
   const NewFlow = () => {
@@ -42,6 +44,18 @@ const initialNodes :  Node[] = [
         ),
         emailTemplateNode: (props: NodeProps<EmailTemplateNodeType>) => (
           <EmailTemplateNode  {...props} 
+          updateNodeData={(source) => {
+            setNodes(nodes => 
+              nodes.map(node => 
+                node.id === props.id 
+                  ? { ...node, data: { ...node.data, source } }
+                  : node
+              )
+            )
+          }}   />
+        ),
+        delayNode : (props: NodeProps<DelayNodeType>) => (
+          <AddDelayNode  {...props} 
           updateNodeData={(source) => {
             setNodes(nodes => 
               nodes.map(node => 
