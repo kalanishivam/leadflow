@@ -1,5 +1,5 @@
-import { Handle, type NodeProps, Position, type Node } from '@xyflow/react'
-import React, { useState, useEffect } from 'react'
+import { Handle, Position, type Node } from '@xyflow/react'
+import  { useState } from 'react'
 import { UserRound, Search, Plus } from 'lucide-react'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 

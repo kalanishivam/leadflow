@@ -1,9 +1,9 @@
 import { Handle, Position, type Node } from '@xyflow/react'
 import { useState } from 'react'
-import { Plus, Mail, Clock7, ChevronDown } from 'lucide-react'
+import { Clock7, ChevronDown } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { ComboBox } from '../ComboBox'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu"
+// import { ComboBox } from '../ComboBox'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu"
 import { DropdownMenuRadioGroup, DropdownMenuRadioItem } from '@radix-ui/react-dropdown-menu'
 
 export type DelayNode = {
@@ -14,12 +14,37 @@ export type DelayNodeType = Node<DelayNode, 'addDelayNode'>;
 
 const AddDelayNode = ({ updateNodeData }: { updateNodeData?: (delayTime: DelayNode) => void }) => {
     const [delayTime, setDelayTime] = useState<DelayNode | null>(null);
-    const [delayType , setDelayType] = useState('')
+    const [delayType , setDelayType] = useState('Minutes');
+    const [openDialog ,setOpenDialog] = useState(false);
+
+    const handleFormSubmit = async(event: React.FormEvent<HTMLFormElement>)=>{
+        try{
+            event.preventDefault();
+            if(delayType ==''){
+                return;
+            }
+            const formData = new FormData(event.target as HTMLFormElement);
+           const time = formData.get('time');
+            const timeSelected = {
+                id : Math.random().toString(),
+                waitTime : Number(time),
+                type : delayType
+            }
+            setDelayTime(timeSelected)
+            updateNodeData?.(timeSelected);
+           }
+        catch(error){
+            console.log(error)
+        }finally{
+            setOpenDialog(false)
+        }
+    }
+
     return (
         <>
             <Handle type='target' position={Position.Top} id='a222' />
             <Handle type='source' position={Position.Bottom} id='a22' />
-            <Dialog>
+            <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                 <DialogTrigger asChild>
                     <div
                         className="flex flex-col  items-center justify-center text-gray-400 rounded-md p-2 text-[1.125rem] bg-white transition"
@@ -50,9 +75,9 @@ const AddDelayNode = ({ updateNodeData }: { updateNodeData?: (delayTime: DelayNo
                         <DialogTitle className='text-black font-bold text-[18px]'>Wait/Delay</DialogTitle>
                     </DialogHeader>
                     <DialogDescription className='font-bold '>Add Delay to a block</DialogDescription>
-                    <form className='flex flex-col  w-full gap-4'>
+                    <form onSubmit={handleFormSubmit} className='flex flex-col  w-full gap-4'>
                         {/* <label htmlFor='time'>Time</label> */}
-                        <input placeholder='Time' required min={5} type='number' id='' name='time' style={{ border: '1px solid black' }} className=' rounded-lg p-2' />
+                        <input placeholder='Time' required min={0} type='number' id='' name='time' style={{ border: '1px solid black' }} className=' rounded-lg p-2' />
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <div className='flex justify-between p-2 rounded-lg' style={{border : '1px solid black'}} >
@@ -70,10 +95,10 @@ const AddDelayNode = ({ updateNodeData }: { updateNodeData?: (delayTime: DelayNo
                                 </DropdownMenuRadioGroup>
                             </DropdownMenuContent>
                         </DropdownMenu>
-                    </form>
                     <DialogFooter>
-                        <button className='bg-black text-white font-semibold px-4 rounded-lg  p-2'>Insert</button>
+                        <button type='submit' className='bg-black text-white font-semibold px-4 rounded-lg  p-2'>Insert</button>
                     </DialogFooter>
+                    </form>
                 </DialogContent>
             </Dialog>
         </>
