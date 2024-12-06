@@ -18,32 +18,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-]
 
-export function ComboBox() {
+export function ComboBox({emailTemplate , value , setValue} : { emailTemplate : EmailTemplateApiResponse[] , value : string , setValue : React.Dispatch<React.SetStateAction<string>> }) {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -54,7 +31,7 @@ export function ComboBox() {
           aria-expanded={open}
         >
           {value
-            ? frameworks.find((framework) => framework.value === value)?.label
+            ? emailTemplate.find((template) => template.name === value)?.name
             : "Select Email Template..."}
         </button>
             <ChevronDown color="black"  />
@@ -67,20 +44,20 @@ export function ComboBox() {
           <CommandList className="max-h-[200px] overflow-y-auto scrollbar-thin ">
             <CommandEmpty>No Template found.</CommandEmpty>
             <CommandGroup>
-              {frameworks.map((framework) => (
+              {emailTemplate.map((framework) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
+                  key={framework.name}
+                  value={framework.name}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue)
                     setOpen(false)
                   }}
                 >
-                  {framework.label}
+                  {framework.name}
                   <Check
                     className={cn(
                       "ml-auto",
-                      value === framework.value ? "opacity-100" : "opacity-0"
+                      value === framework.name ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>

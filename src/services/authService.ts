@@ -6,8 +6,8 @@ export const authService = {
     return response.data;
   },
 
-  async verifyToken() {
-    const response = await axios.get('verfifyurl');
+  async verifyToken() { 
+    const response = await axios.get('');
     return response.data;
   },
 
@@ -15,4 +15,4 @@ export const authService = {
     const response = await axios.post('.logut url');
     return response.data;
   }
-};
+}; 

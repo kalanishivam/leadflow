@@ -1,14 +1,43 @@
+import { signupUser } from '@/api/apiClient';
+import {  useToast } from '@/hooks/use-toast';
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+    const { toast } = useToast()
+    const navigate = useNavigate();
     const handleFormSubmit = async(event: React.FormEvent<HTMLFormElement>)=>{
         try{
             event.preventDefault();
             const formData = new FormData(event.target as HTMLFormElement);
             console.log(`the email is ${formData.get('email')}`)
             console.log(`the password is ${formData.get('password')}`)
+            const email = formData.get('email');
+            const password = formData.get('password');
+            const username = formData.get('name');
+            if (typeof email !== 'string' || typeof password !== 'string' || typeof username !== 'string') {
+                throw new Error('Email or password is missing or invalid');
+              }
+              const signUp = await signupUser({name : username , email , password});
+              if("error" in signUp){
+                throw new Error('Failed to signup');
+              }
+              toast({
+                title: "Signup successful",
+                description: "Continue to login with your new account",
+                color: "green",
+                duration: 5000,
+              })
+              navigate('/login');
+              
         }catch(error){
+            toast({
+                title: "Error",
+                description: "Error loggin in ",
+                duration: 5000,
+                color : 'red'
+              })
             console.log(error)
         }
     }

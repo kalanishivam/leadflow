@@ -6,6 +6,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import DashBoard from './pages/DashBoard'
 import { AuthProvider } from './context/AuthContext'
 import NewFlow from './pages/NewFlow'
+import Home from './pages/Home'
 
 
 function App() {
@@ -16,9 +17,10 @@ function App() {
       <Routes>
         <Route path='/login' element = {<Login />} />
         <Route path='/signup' element = {<Signup />} />
+        <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/flow/new" element={<NewFlow />} />
-        <Route element={<ProtectedRoute />}>
+        <Route path='/' element = {<Home />} />
         </Route>
       </Routes>
       </AuthProvider>

@@ -26,7 +26,7 @@ const AddDelayNode = ({ updateNodeData }: { updateNodeData?: (delayTime: DelayNo
             const formData = new FormData(event.target as HTMLFormElement);
            const time = formData.get('time');
             const timeSelected = {
-                id : Math.random().toString(),
+                // id : Math.random().toString(),
                 waitTime : Number(time),
                 type : delayType
             }

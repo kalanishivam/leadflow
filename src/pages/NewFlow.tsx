@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react'
-import { Clock1, Mail } from 'lucide-react';
+import { Clock1, Mail, User } from 'lucide-react';
 import { useCallback } from 'react';
 import {
   ReactFlow,
@@ -8,20 +8,27 @@ import {
   Background,
   useNodesState,
   useEdgesState,
-  NodeProps,
+  NodeProps, type Edge,
   NodeResizer, type Node,
   addEdge, Connection,
 } from '@xyflow/react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+// import { ObjectId } from 'bson';
 
 import '@xyflow/react/dist/style.css';
 import AddLeadNode, { AddLeadNodeType } from '../components/nodes/AddLeadNode';
 import EmailTemplateNode, { EmailTemplateNodeType } from '../components/nodes/EmailTemplateNode';
 import AddDelayNode, { DelayNodeType } from '@/components/nodes/AddDelayNode';
+import { createNewWorkFlow } from '@/api/apiClient';
+import { generateSecureObjectId } from '@/lib/utils';
+
+// type ConnectionWithId = Connection & { id?: string };
+// import { createNewWorkFlow } from '@/api/apiClient';
 const initialNodes: Node[] = [
-  { id: '22', position: { x: 500, y: 50 }, type: 'addLeadNode', data: {}, },
+  { id: `${generateSecureObjectId().toString()}`, position: { x: 500, y: 50 }, type: 'addLeadNode', data: {}, },
 ];
-const initialEdges = [{ id: '1', source: '1', target: '2' }];
+
+const initialEdges : Edge[] = [];
 const NewFlow = () => {
   const [openNewNodeDialog, setOpenNewNodeDialog] = useState(false);
   const [saveFlowLoader , setSaveFlowLoader] = useState(false);
@@ -85,7 +92,7 @@ const NewFlow = () => {
       return [
         ...nodes,
         {
-          id: Math.random().toString(),
+          id: generateSecureObjectId().toString(),
           position: { x: 500, y: yPos.current },
           data: {},
           type: type
@@ -95,10 +102,28 @@ const NewFlow = () => {
     setOpenNewNodeDialog(false)
   }, [nodes.length]);
   const onConnect = useCallback((params: Connection) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
-
+  // const onConnect = useCallback(
+  //   (connection : Connection) => {
+  //     // connection.id = generateSecureObjectId().toString();
+  //     setEdges((oldEdges) => addEdge(connection, oldEdges));
+  //   },
+  //   [setEdges],
+  // );
 
   const handleSaveFlow = async()=>{
+    console.log('in here')
     setSaveFlowLoader(true)
+    edges.forEach(edge => {
+      edge.id = generateSecureObjectId().toString();
+    })
+    const data = {
+      nodes : nodes,
+      edges : edges,
+      flowName : 'test123443'
+    }
+    const res = await createNewWorkFlow(data);
+    console.log('in herer after teh res is' )
+    console.log(res)
     console.log(nodes);
     console.log(edges)
     setSaveFlowLoader(false)
@@ -135,6 +160,13 @@ const NewFlow = () => {
               <div className='flex flex-col text-[1.125rem] text-gray-600'>
                 <p>Wait/Delay</p>
                 <p>Add a delay between blocks</p>
+              </div>
+            </div>
+            <div onClick={() => { addNode('addLeadNode') }} className='bg-white py-6 px-2.5 flex gap-3 items-center rounded-xl cursor-pointer' style={{ border: '1px solid gray' }}>
+              <User style={{ border: '1px solid #CBC3E3' }} width={80} height={60} className='text-purple-200 p-1 rounded-xl bg-purple-600 text-[40px]' />
+              <div className='flex flex-col text-[1.125rem] text-gray-600'>
+                <p>Add Lead</p>
+                <p>Add lead block</p>
               </div>
             </div>
           </div>
