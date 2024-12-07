@@ -94,3 +94,13 @@ export const createNewWorkFlow = async(data : unknown): Promise<{ message: strin
         return { error: 'Failed to create workflow' };
     }
 };
+
+export const getWorkFlows = async(): Promise<WorkflowApiResponse[] | { error: string }> => { 
+    try {
+        const response = await axiosBaseUrl.get('/workflow');
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return { error: 'Failed to get workflow' };
+    }
+};

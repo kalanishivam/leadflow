@@ -3,14 +3,14 @@ import  { useState } from 'react'
 import { UserRound, Search, Plus } from 'lucide-react'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 
-// Define the lead object type
+
 export type Lead = {
   id: string
   email: string
   name: string
 }
 
-// Update the node data type to be an array of leads
+
 export type AddLeadNodeData = {
   leads: Lead[]
 }
@@ -24,9 +24,9 @@ const AddLeadNode = ({ updateNodeData }: {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [manualLead, setManualLead] = useState<Omit<Lead, 'id'>>({ email: '', name: '' });
 
-  // Placeholder for existing leads (would be replaced with actual API call)
+  // Placeholder for existing leads (would be replaced with actual API call) in case of production 
   const existingLeads: Lead[] = [
-    { id: '1', name: 'John Doe', email: 'john@example.com' },
+    { id: '1', name: 'Shivam Kalani', email: 'kalanishivam@gmail.com' },
     { id: '2', name: 'Jane Smith', email: 'jane@example.com' },
     { id: '3', name: 'Alice Johnson', email: 'alice@example.com' },
   ];
@@ -51,7 +51,7 @@ const AddLeadNode = ({ updateNodeData }: {
       const updatedLeads = [...leads, newLead];
       setLeads(updatedLeads);
       updateNodeData?.(updatedLeads);
-      // Reset manual lead input
+      
       setManualLead({ email: '', name: '' });
     }
   }
@@ -99,7 +99,7 @@ const AddLeadNode = ({ updateNodeData }: {
               />
             </div>
 
-            {/* Existing Leads List */}
+           
             <div className="max-h-40 overflow-y-auto">
               {filteredLeads.map((lead) => (
                 <div 
@@ -142,7 +142,7 @@ const AddLeadNode = ({ updateNodeData }: {
               </div>
             </div>
 
-            {/* Added Leads Preview */}
+            
             <div className="max-h-40 overflow-y-auto">
               <p className="font-semibold mb-2">Added Leads</p>
               <p>{leads.length} - Selected</p>

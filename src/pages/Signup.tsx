@@ -1,14 +1,17 @@
 import { signupUser } from '@/api/apiClient';
 import {  useToast } from '@/hooks/use-toast';
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+
 const Signup = () => {
+  const [loadingSignupButton  , setLoadingSignupButton] = useState(false);
     const { toast } = useToast()
     const navigate = useNavigate();
     const handleFormSubmit = async(event: React.FormEvent<HTMLFormElement>)=>{
         try{
+          setLoadingSignupButton(true);
             event.preventDefault();
             const formData = new FormData(event.target as HTMLFormElement);
             console.log(`the email is ${formData.get('email')}`)
@@ -16,6 +19,15 @@ const Signup = () => {
             const email = formData.get('email');
             const password = formData.get('password');
             const username = formData.get('name');
+            if(password !== formData.get('confirmPassword')){
+              toast({
+                title: "Error",
+                description: "Passwords do not match",
+                duration: 5000,
+                style : {backgroundColor : 'red' , color : 'white'}
+              })
+              return;
+            }
             if (typeof email !== 'string' || typeof password !== 'string' || typeof username !== 'string') {
                 throw new Error('Email or password is missing or invalid');
               }
@@ -34,11 +46,13 @@ const Signup = () => {
         }catch(error){
             toast({
                 title: "Error",
-                description: "Error loggin in ",
+                description: "Please use different email",
                 duration: 5000,
-                color : 'red'
+                style : {backgroundColor : 'red' , color : 'white'}
               })
             console.log(error)
+        }finally{
+          setLoadingSignupButton(false)
         }
     }
   return (
@@ -65,9 +79,10 @@ const Signup = () => {
                 <label className=' font-semibold text-[24px] '>Confirm Password</label>
                 <input type='password' placeholder='Password' className='border-b-2 shadow-inner border-gray-500 rounded-lg p-2' name='confirmPassword' />
                 </div>
-                <button className='bg-black   text-white rounded-lg p-2 text-center'>Login</button>
+                <button disabled = {loadingSignupButton} className='bg-black  text-white rounded-lg p-2 text-center'>{loadingSignupButton ? 'Loading...' : 'Signup'}</button>
             </form>
         </div>
+      
     </div>
   )
 }

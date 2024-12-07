@@ -32,4 +32,14 @@ declare interface EmailTemplateApiResponse {
     id: string;
 }
 type GetEmailTemplatesResponse = EmailTemplate[] | { error: string };
-  
+
+declare interface WorkflowApiResponse {
+    name: string;
+    status: string;
+    createdAt: string;
+    // updatedAt: string;
+    // user: string;
+    // nodes: string[];
+    // edges: string[];
+    // id: string;
+}

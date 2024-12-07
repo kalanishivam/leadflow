@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
+import  { useMemo, useRef, useState } from 'react'
 import { Clock1, Mail, User } from 'lucide-react';
 import { useCallback } from 'react';
 import {
@@ -24,6 +24,7 @@ import EmailTemplateNode, { EmailTemplateNodeType } from '../components/nodes/Em
 import AddDelayNode, { DelayNodeType } from '@/components/nodes/AddDelayNode';
 // import { createNewWorkFlow } from '@/api/apiClient';
 import { generateSecureObjectId } from '@/lib/utils';
+import { createNewWorkFlow } from '@/api/apiClient';
 
 // type ConnectionWithId = Connection & { id?: string };
 // import { createNewWorkFlow } from '@/api/apiClient';
@@ -75,25 +76,24 @@ const NewFlow = () => {
           )
         }} />
     )
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }), []);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  // console.log(nodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const { toast } = useToast();
   const navigate = useNavigate();
   const addNode = useCallback((type: string) => {
     
-    // console.log(nodes.length)
     if (nodes.length === 0) {
       yPos.current = 50;
     } else {
       
       yPos.current = 50 + (150*nodes.length);
-      // console.log(yPos.current);
+      
     }
 
     setNodes((nodes: Node[]) => {
-      // console.log(nodes);
+     
       return [
         ...nodes,
         {
@@ -105,6 +105,7 @@ const NewFlow = () => {
       ];
     });
     setOpenNewNodeDialog(false)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodes.length]);
   const onConnect = useCallback((params: Connection) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
   // const onConnect = useCallback(
@@ -117,33 +118,30 @@ const NewFlow = () => {
 
   const handleSaveFlow = async()=>{
     try{
-    console.log('in here')
+    
     setSaveFlowLoader(true)
     edges.forEach(edge => {
       edge.id = generateSecureObjectId().toString();
     })
-    // const data = {
-    //   nodes : nodes,
-    //   edges : edges,
-    //   flowName : generateSecureObjectId().toString()
-    // }
+    const data = {
+      nodes : nodes,
+      edges : edges,
+      flowName : generateSecureObjectId().toString()
+    }
     // flow name is curretnyla randomly generated string;
     
-    // const res = await createNewWorkFlow(data);
+    const res = await createNewWorkFlow(data);
     console.log('in herer after teh res is' )
-    // console.log(res)
+    console.log(res)
     console.log(nodes);
     console.log(edges)
-    // const sequence =getNodeSequence(nodes, edges);
-    // console.log(sequence)
-    console.log('this was the sequnce')
-    // toast({
-    //   title: "Login Error",
-    //   description: "Incorrect email or pasword",
-    //   variant : 'default',
-    //   style : {backgroundColor : 'lightgreen'}
+    toast({
+      title: "Flow saved successfully",
+      description: "Success",
+      variant : 'default',
+      style : {backgroundColor : 'lightgreen'}
 
-    // })
+    })
     setSaveFlowLoader(false)
     navigate('/')
   }catch(error){

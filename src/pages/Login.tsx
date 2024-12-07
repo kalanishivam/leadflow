@@ -1,17 +1,18 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef , useState} from 'react'
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import {  useToast } from '@/hooks/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 
 const Login = () => {
-    
+    const [loadingLoginButton  , setLoadingLoginButton] = useState(false);
     const { toast } = useToast()
     const {login} = useAuth();
     const inputRef  = useRef<HTMLInputElement>(null);
     const handleFormSubmit = async(event: React.FormEvent<HTMLFormElement>)=>{
         try{
             event.preventDefault();
+            setLoadingLoginButton(true);
             const formData = new FormData(event.target as HTMLFormElement);
             const email = formData.get('email');
             const password = formData.get('password');
@@ -28,6 +29,8 @@ const Login = () => {
                 description: "Incorrect email or pasword",
                 variant : 'destructive'
               })
+        }finally{
+          setLoadingLoginButton(false);
         }
     }
     useEffect(()=>{
@@ -51,7 +54,7 @@ const Login = () => {
                 <label htmlFor='password' className=' font-semibold text-[24px] '>Password</label>
                 <input required type='password' placeholder='Password' className='border-b-2 border-gray-500 shadow-inner rounded-lg p-2' name='password' />
                 </div>
-                <button className='bg-black  text-white rounded-lg p-2 text-center'>Login</button>
+                <button disabled={loadingLoginButton} className='bg-black  text-white rounded-lg p-2 text-center'>{loadingLoginButton ? 'Loading...' : 'Login'}</button>
             </form>
         </div>
         <Toaster />

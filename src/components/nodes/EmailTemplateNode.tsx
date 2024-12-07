@@ -4,7 +4,7 @@ import {  Plus, Mail } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ComboBox } from '../ComboBox'
 import { createEmailTemplate, getEmailTemplates } from '@/api/apiClient'
-import { Toaster } from '../ui/toaster'
+// import { Toaster } from '../ui/toaster'
 import { useToast } from '@/hooks/use-toast'
 
 
@@ -57,9 +57,10 @@ const EmailTemplateNode = ({updateNodeData} : { updateNodeData?: (emailTemplate:
         throw new Error('Failed to create email template');
       }
       toast({
-        title: "Error",
-        description: "Error creating email template",
-        variant : 'default'
+        title: "Success",
+        description: "Successfully Created Template",
+        variant : 'default',
+        style : {backgroundColor : 'lightgreen'}
       })
       setOpenCreateEmailDialog(false);
       setRefreshApiCallForEmailTemplate(prev=>!prev);
@@ -147,7 +148,7 @@ const EmailTemplateNode = ({updateNodeData} : { updateNodeData?: (emailTemplate:
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <Toaster />
+      
     </>
   )
 }
