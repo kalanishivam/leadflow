@@ -12,14 +12,17 @@ import {
   NodeResizer, type Node,
   addEdge, Connection,
 } from '@xyflow/react';
+import { Toaster } from '@/components/ui/toaster';
+import {  useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { useNavigate } from 'react-router-dom';
 // import { ObjectId } from 'bson';
 
 import '@xyflow/react/dist/style.css';
 import AddLeadNode, { AddLeadNodeType } from '../components/nodes/AddLeadNode';
 import EmailTemplateNode, { EmailTemplateNodeType } from '../components/nodes/EmailTemplateNode';
 import AddDelayNode, { DelayNodeType } from '@/components/nodes/AddDelayNode';
-import { createNewWorkFlow } from '@/api/apiClient';
+// import { createNewWorkFlow } from '@/api/apiClient';
 import { generateSecureObjectId } from '@/lib/utils';
 
 // type ConnectionWithId = Connection & { id?: string };
@@ -76,6 +79,8 @@ const NewFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   // console.log(nodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const addNode = useCallback((type: string) => {
     
     // console.log(nodes.length)
@@ -111,25 +116,48 @@ const NewFlow = () => {
   // );
 
   const handleSaveFlow = async()=>{
+    try{
     console.log('in here')
     setSaveFlowLoader(true)
     edges.forEach(edge => {
       edge.id = generateSecureObjectId().toString();
     })
-    const data = {
-      nodes : nodes,
-      edges : edges,
-      flowName : 'test123443'
-    }
-    const res = await createNewWorkFlow(data);
+    // const data = {
+    //   nodes : nodes,
+    //   edges : edges,
+    //   flowName : generateSecureObjectId().toString()
+    // }
+    // flow name is curretnyla randomly generated string;
+    
+    // const res = await createNewWorkFlow(data);
     console.log('in herer after teh res is' )
-    console.log(res)
+    // console.log(res)
     console.log(nodes);
     console.log(edges)
+    // const sequence =getNodeSequence(nodes, edges);
+    // console.log(sequence)
+    console.log('this was the sequnce')
+    // toast({
+    //   title: "Login Error",
+    //   description: "Incorrect email or pasword",
+    //   variant : 'default',
+    //   style : {backgroundColor : 'lightgreen'}
+
+    // })
     setSaveFlowLoader(false)
+    navigate('/')
+  }catch(error){
+    toast({
+      title: "Login Error",
+      description: "Incorrect email or pasword",
+      variant : 'destructive'
+    })
+    console.log(error)
+  }
   }
   return (
     <div>
+      <Toaster />
       <div className='flex h-[10vh] bg-white justify-between items-center mb-2 px-4 py-1'>
         <div className='flex flex-col text-black font-bold text-[1.125rem] '>
           <p>Task For Mern Stack By Shivam Kalani</p>

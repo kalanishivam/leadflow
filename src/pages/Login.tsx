@@ -25,7 +25,7 @@ const Login = () => {
             console.log('before tosst')
             toast({
                 title: "Login Error",
-                description: "Cos",
+                description: "Incorrect email or pasword",
                 variant : 'destructive'
               })
         }
