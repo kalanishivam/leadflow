@@ -58,7 +58,7 @@ export const signupUser = async(data : SignupInput): Promise<{ message: string }
 export const verifyToken = async(): Promise<{ message: string } | { error: string }> => {
     try {
      
-        const response = await axiosBaseUrl.post('/user/verify');
+        const response = await axiosBaseUrl.get('/user/verify');
         
         return response.data;
     } catch (error) {
