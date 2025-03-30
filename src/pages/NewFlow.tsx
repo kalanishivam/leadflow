@@ -158,7 +158,7 @@ const NewFlow = () => {
       <Toaster />
       <div className='flex h-[10vh] bg-white justify-between items-center mb-2 px-4 py-1'>
         <div className='flex flex-col text-black font-bold text-[1.125rem] '>
-          <p>Task For Mern Stack By Shivam Kalani</p>
+          <p>CREATE FLOWS</p>
           <p className='font-semibold text-[0.9rem]'>Click on the block to configure it or add a new block</p>
         </div>
         <button disabled={saveFlowLoader} className='bg-blue-700 rounded-xl text-white px-4 font-bold py-1 ' onClick={handleSaveFlow}>{saveFlowLoader ? 'Saving...' : 'Save Flow'}</button>

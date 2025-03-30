@@ -26,7 +26,7 @@ const Home = () => {
     <div>
         <div className='w-full h-fit p-8 bg-gray-200 max-md:p-4 flex justify-between items-center text-black gont-bold'>
             <p>Welcome, {user}</p>
-            <p className=' text-black rounded-xl px-2 py-2'>Mern Stack Task BY <span className='font-bold text-green-700 underline text-[24px]'>SHIVAM KALANI</span></p>
+            <p className=' text-black rounded-xl px-2 py-2'>LEADFLOW BY <span className='font-bold text-green-700 underline text-[24px]'>SHIVAM KALANI</span></p>
             <div className='flex gap-2'>
             <button onClick={()=>{navigate('/flow/new')}} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl'>New Flow</button>
             <button onClick={()=>{logout()}} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl'>Logout</button>
